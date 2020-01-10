@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class HealthHelper : MonoBehaviour
 {
+    public int RubyChance;
     public int Gold = 50;
     public int MaxHealth = 100;
     public int Health = 100;
+    bool _isDead;
 
     GameHelper _gameHelper;
     // Start is called before the first frame update
@@ -26,14 +28,24 @@ public class HealthHelper : MonoBehaviour
     
     public void GetHit(int damage)
     {
+        if(_isDead)
+        return;
+
         int health = Health - damage;
 
         if(health <= 0)
         {
+            _isDead = true;
             _gameHelper.TakeGold(Gold);
-            Destroy(gameObject);
 
+            int random = Random.Range(0,100);
+            if(random < RubyChance)
+                _gameHelper.TakeRuby(1);      
+
+            Destroy(gameObject);
         }
+        
+        GetComponent<Animator>().SetTrigger("Hit");
         Health = health;
 
         _gameHelper.HealthSlider.value = Health;

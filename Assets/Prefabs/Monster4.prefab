@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd50c7a3e485b304baaf54df22b82d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RubyChance: 20
   Gold: 300
   MaxHealth: 700
   Health: 700

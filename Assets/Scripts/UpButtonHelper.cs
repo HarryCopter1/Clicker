@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class UpButtonHelper : MonoBehaviour
 {
+    public bool IsHero;
+    public bool IsRuby;
+    public GameObject HeroPrefab;
+
     public GameObject UpPrefab;
     public Image IcoImage;
     public Text DamageText;
@@ -29,10 +33,29 @@ public class UpButtonHelper : MonoBehaviour
 
     public void UpClick()
     {
-        if(_gameHelper.PlayerGold >= Price)
+        if(!IsRuby && _gameHelper.PlayerGold >= Price
+        ||
+        IsRuby && _gameHelper.PlayerRuby >= Price)
         {
+            if(!IsRuby)
             _gameHelper.PlayerGold -= Price;
-            _gameHelper.PlayerDamage += Damage;
+            else
+            _gameHelper.PlayerRuby -= Price;
+
+            if(IsHero == false)
+            {
+                _gameHelper.PlayerDamage += Damage;
+            }
+            else
+            {
+                GameObject hero = Instantiate(HeroPrefab).gameObject;
+                Vector3 heroPos = new Vector3(
+                    Random.Range(3.0f,7.0f),
+                    Random.Range(-3.5f,-3.0f),
+                    0
+                );
+                hero.transform.position = heroPos;
+            }
 
             GameObject upEffect = Instantiate(UpPrefab).gameObject;
             Transform canvas = GameObject.Find("Canvas").transform;
@@ -40,7 +63,8 @@ public class UpButtonHelper : MonoBehaviour
             upEffect.GetComponent<Image>().sprite = IcoImage.sprite;
 
             Destroy(upEffect,1.2f);
-            Destroy(gameObject);
+            if(IsHero == false)
+                Destroy(gameObject);
         }
     }
 }

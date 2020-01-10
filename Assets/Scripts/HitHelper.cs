@@ -23,10 +23,11 @@ public class HitHelper : MonoBehaviour
 
     private void OnMouseDown() 
     {
-        GetComponent<Animator>().SetTrigger("Hit");
 
         GetComponent<HealthHelper>().GetHit(_gameHelper.PlayerDamage);
-
+        if(_gameHelper.EndGame)
+            return;
+            
         _playerHelper.Attack();
     }
 }
